@@ -125,7 +125,19 @@ const addTrack = function(name, artist, album) {
 
 // adds a playlist to the library
 const addPlaylist = function(name) {
+    // Generate a new unique playlist ID
+    const newPlaylistId = generateUid();
 
+    // Create the playlist object with no initial tracks
+    const newPlaylist = {
+        id: newPlaylistId,
+        name: name,
+        tracks: []  // Starts with an empty array of tracks
+    };
+
+    // Add the new playlist to the library
+    library.playlists[newPlaylistId] = newPlaylist;
+    console.log(`Added new playlist: ${newPlaylistId}: ${name} - 0 tracks`);
 }
 
 
@@ -151,3 +163,6 @@ printPlaylist("p02");// Test if track t01 is in playlist p02
 console.log ("///////////////////////////////////////////");
 addTrack("Here Comes The Sun", "The Beatles", "Abbey Road"); // Adding track to library
 printTracks(library); // Test to see the track added to library
+console.log ("///////////////////////////////////////////");
+addPlaylist("WorkOut music"); // Adding a new playlist
+printPlaylists(library); // Test to see new playlist added to library
