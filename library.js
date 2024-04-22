@@ -45,7 +45,11 @@ const printPlaylists = function() {
 // t02: Model View Controller by James Dempsey (WWDC 2003)
 // t03: Four Thirty-Three by John Cage (Woodstock 1952)
 const printTracks = function() {
-
+       const tracks = library.tracks;
+       for (const trackId in tracks) {
+           const track = tracks[trackId];
+           console.log(`${trackId}: ${track.name} by ${track.artist} (${track.album})`);
+       }
 }
 
 
@@ -95,3 +99,5 @@ const printSearchResults = function(query) {
 
 // Call the function with the library object
 printPlaylists(library);
+console.log ("///////////////////////////////////////////")
+printTracks(library);
