@@ -58,13 +58,42 @@ const printTracks = function() {
 // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // t02: Model View Controller by James Dempsey (WWDC 2003)
 const printPlaylist = function(playlistId) {
-
+       const playlist = library.playlists[playlistId];
+       if (!playlist) {
+           console.log('Playlist not found');
+           return;
+       }
+       const trackCount = playlist.tracks.length;
+       console.log(`${playlistId}: ${playlist.name} - ${trackCount} tracks`);
+       playlist.tracks.forEach(trackId => {
+           const track = library.tracks[trackId];
+           console.log(`${trackId}: ${track.name} by ${track.artist} (${track.album})`);
+       });
 }
 
 
 // adds an existing track to an existing playlist
 const addTrackToPlaylist = function(trackId, playlistId) {
-
+       const playlist = library.playlists[playlistId];
+       const track = library.tracks[trackId];
+   
+       // Check if both the track and the playlist exist
+       if (!playlist) {
+           console.log('Playlist not found');
+           return;
+       }
+       if (!track) {
+           console.log('Track not found');
+           return;
+       }
+   
+       // Check if the track is already in the playlist to avoid duplicates
+       if (!playlist.tracks.includes(trackId)) {
+           playlist.tracks.push(trackId);
+           console.log(`Track ${trackId} added to playlist ${playlistId}`);
+       } else {
+           console.log('Track already exists in playlist');
+       }
 }
 
 
@@ -77,7 +106,20 @@ const generateUid = function() {
 
 // adds a track to the library
 const addTrack = function(name, artist, album) {
+ // Generate a new unique track ID
+ const newTrackId = 't' + generateUid();
 
+ // Create the track object
+ const newTrack = {
+     id: newTrackId,
+     name: name,
+     artist: artist,
+     album: album
+ };
+
+ // Add the new track to the library
+ library.tracks[newTrackId] = newTrack;
+ console.log(`Added new track: ${newTrackId}: ${name} by ${artist} (${album})`);
 }
 
 
@@ -99,5 +141,13 @@ const printSearchResults = function(query) {
 
 // Call the function with the library object
 printPlaylists(library);
-console.log ("///////////////////////////////////////////")
+console.log ("///////////////////////////////////////////");
 printTracks(library);
+console.log ("///////////////////////////////////////////");
+printPlaylist("p01");
+console.log ("///////////////////////////////////////////");
+addTrackToPlaylist('t01', 'p02'); // Adding track t01 to playlist p02
+printPlaylist("p02");// Test if track t01 is in playlist p02
+console.log ("///////////////////////////////////////////");
+addTrack("Here Comes The Sun", "The Beatles", "Abbey Road"); // Adding track to library
+printTracks(library); // Test to see the track added to library
